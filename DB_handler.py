@@ -9,9 +9,6 @@ class DBModule :
         firebase = pyrebase.initialize_app(config)
         self.db = firebase.database()
 
-    def login(self,uid,pw):
-        pass
-
     def singin(self,_id_,pwd,name):
         informations = {
             "uname" : name,
@@ -32,3 +29,5 @@ class DBModule :
         return True
 
   
+    def login(self,uid,pw):
+        pass

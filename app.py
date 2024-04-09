@@ -10,18 +10,6 @@ DB = DBModule()
 def index():
     return render_template("index.html")
 
-@app.route("/logout")
-def logout():
-    pass
-
-@app.route("/login")
-def login():
-    pass
-
-@app.route("/login_done",methods=["GET"])
-def login_done():
-    pass
-
 @app.route("/signin")
 def signin():
     return render_template("signin.html")
@@ -37,7 +25,18 @@ def signin_done():
         flash("이미 존재하는 아이디입니다.")
         return redirect(url_for("signin"))
     
-    
+
+@app.route("/login")
+def login():
+    pass
+
+@app.route("/login_done",methods=["GET"])
+def login_done():
+    pass
+
+@app.route("/logout")
+def logout():
+    pass
 
 if __name__ == "__main__":
     app.run(port=5500,host="0.0.0.0",debug=True)
