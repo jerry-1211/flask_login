@@ -8,8 +8,12 @@ DB = DBModule()
 
 @app.route("/")
 def index():
-    print(session)
-    return render_template("index.html")
+    if "uid" in session :
+        user = session["uid"]
+    else :
+        user = "Login"
+    return render_template("index.html",user=user)
+
 
 @app.route("/signin")
 def signin():
@@ -20,7 +24,7 @@ def signin_done():
     uid = request.args.get("id")
     pwd = request.args.get("pwd")
     name = request.args.get("name")
-    if DB.singin(_id_=uid,pwd=pwd,name=name):
+    if DB.signin(_id_=uid,pwd=pwd,name=name):
         return redirect(url_for("index"))
     else :
         flash("이미 존재하는 아이디입니다.")
@@ -46,9 +50,12 @@ def login_done():
         
 @app.route("/logout")
 def logout():
-    # if "uid" in session:
-
-    pass
+   if "uid" in session :
+        session.pop("uid")
+        return redirect(url_for("index"))
+   else :
+       return redirect(url_for("login"))
+    
 
 if __name__ == "__main__":
     app.run(port=5500,host="0.0.0.0",debug=True)
