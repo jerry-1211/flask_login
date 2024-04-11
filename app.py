@@ -8,6 +8,7 @@ DB = DBModule()
 
 @app.route("/")
 def index():
+    print(session)
     return render_template("index.html")
 
 @app.route("/signin")
@@ -28,14 +29,25 @@ def signin_done():
 
 @app.route("/login")
 def login():
-    pass
+    if "uid" in session : 
+        return redirect(url_for("index"))
+    return render_template("login.html")
 
 @app.route("/login_done",methods=["GET"])
 def login_done():
-    pass
-
+    uid = request.args.get("id")
+    pwd = request.args.get("pwd")
+    if DB.login(uid,pwd) :
+        session["uid"] = uid 
+        return redirect(url_for("index"))
+    else : 
+        flash("아이디가 없거나 비밀번호가 틀립니다.")
+        return redirect(url_for("login"))
+        
 @app.route("/logout")
 def logout():
+    # if "uid" in session:
+
     pass
 
 if __name__ == "__main__":

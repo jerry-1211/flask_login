@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block contents %}
+<h2>회원가입</h2>
+<form action="{{url_for('login_done')}}" method="get">
+    <p>ID :</p>
+    <input type="text" name="id" id="id">
+    <p>Password :</p>
+    <input type="password" name="pwd" id="pwd">
+    <button type="submit">로그인 하기</button>
+
+</form>
+{% endblock contents %}
+
+
+{% block message %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<p>{{messages[0]}}</p>
+{% endif %}
+{% endwith %}
+{% endblock message %}

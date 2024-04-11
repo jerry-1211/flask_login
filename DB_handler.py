@@ -29,5 +29,13 @@ class DBModule :
         return True
 
   
-    def login(self,uid,pw):
-        pass
+    def login(self,uid,pwd):
+        users = self.db.child("users").get().val()
+        try : 
+            userinfo = users[uid]
+            if userinfo["pwd"] == pwd :
+                return True
+            else :
+                return False 
+        except :
+            return False
