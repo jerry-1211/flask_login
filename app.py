@@ -56,6 +56,47 @@ def logout():
    else :
        return redirect(url_for("login"))
     
+@app.route("/write")
+def write():
+    if "uid" in session :
+        return render_template("write_post.html")
+    else :
+        return redirect(url_for("login"))
+    
+
+@app.route("/write_done",methods=["GET"])
+def write_done():
+    title = request.args.get("title")
+    content = request.args.get("content")
+    uid = session.get("uid")
+    DB.write_post(uid=uid,content=content,title=title)
+    return redirect(url_for("index"))
+
+@app.route("/list")
+def post_list():
+    post_list = DB.post_list()
+    if post_list is None:
+        length = 0
+    else : 
+        length = len(post_list)
+    return render_template("post_list.html",post_list=post_list.items(),length=length)
+
+
+@app.route("/post/<string:pid>")
+def post(pid) : 
+    post = DB.post_detail(pid=pid)
+    return render_template("post_detail.html",post=post)
+
+
+@app.route("/user/<string:uid>")
+def user_post(uid) : 
+    u_post = DB.get_user(uid)
+    if u_post is None : 
+        length = 0
+    else : 
+        length = len(u_post)
+    return render_template("user_detail.html",post_list=u_post,length=length,uid=uid)
+
 
 if __name__ == "__main__":
     app.run(port=5500,host="0.0.0.0",debug=True)

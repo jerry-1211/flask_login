@@ -1,5 +1,6 @@
 import pyrebase
 import json
+import uuid
 
 class DBModule : 
     def __init__(self):
@@ -36,3 +37,29 @@ class DBModule :
                 return False 
         except :
             return False
+        
+    
+    def write_post(self,title,content,uid):
+        pid = str(uuid.uuid4())[:10]
+        informations = {
+            "title" : title,
+            "contents" : content,
+            "uid" : uid
+        }
+        self.db.child("posts").child(pid).set(informations)
+
+    def post_list(self):
+        post_list = self.db.child("posts").get().val()
+        return post_list
+    
+    def post_detail(self,pid):
+        post = self.db.child("posts").get().val()[pid]
+        return post
+    
+    def get_user(self,uid):
+        post_list = []
+        users_post = self.db.child("posts").get().val()
+        for post in users_post.items():
+            if post[1]["uid"] == uid : 
+                post_list.append(post)
+        return post_list
